@@ -117,5 +117,5 @@ The judge evaluates tasks that are `ready_for_judgment`, writes verdicts to `pro
 Run:
 
 ```bash
-streamlit run app.py
+uv run --no-project --with-requirements requirements.txt streamlit run app.py
 ```

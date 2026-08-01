@@ -29,5 +29,5 @@ The judge evaluates every task currently marked `ready_for_judgment`.
 ## Streamlit
 
 ```bash
-streamlit run app.py
+uv run --no-project --with-requirements requirements.txt streamlit run app.py
 ```

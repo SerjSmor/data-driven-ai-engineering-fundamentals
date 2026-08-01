@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "buildguild"
+version = "0.1.0"
+description = "BuildGuild - A series of LLM engineering quests"
+requires-python = ">=3.10"
+
+[tool.uv.workspace]
+members = [
+  "01-rag-evaluation",
+  "02-few-shot-prompt-optimization",
+  "03-atis-few-shot-dspy",
+  "04-llm-judge-calibration",
+]

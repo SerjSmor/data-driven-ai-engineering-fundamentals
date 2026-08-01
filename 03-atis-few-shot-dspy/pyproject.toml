@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "buildguild-atis-few-shot-dspy"
+version = "0.1.0"
+description = "BuildGuild Quest 3: ATIS Few-Shot with DSPy"
+requires-python = ">=3.10"
+dependencies = [
+  "streamlit>=1.36",
+  "datasets>=2.19",
+  "dspy>=2.6",
+  "openai>=1.0",
+]
+
+[tool.uv]
+managed = true
+
+# This quest is run as a Streamlit application, not imported as a Python
+# package.  Allow Hatch to build the editable project metadata without trying
+# to infer a package directory from the project name.
+[tool.hatch.build.targets.wheel]
+bypass-selection = true

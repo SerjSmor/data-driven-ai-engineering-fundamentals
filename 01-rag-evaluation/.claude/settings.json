@@ -1,0 +1,7 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "python3 tools/quest_statusline.py",
+    "refreshInterval": 10
+  }
+}

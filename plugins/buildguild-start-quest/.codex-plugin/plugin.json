@@ -1,0 +1,21 @@
+{
+  "name": "buildguild-start-quest",
+  "version": "0.1.0",
+  "description": "Start a BuildGuild quest from Codex.",
+  "author": {
+    "name": "BuildGuild"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "BuildGuild Start Quest",
+    "shortDescription": "Launch a BuildGuild quest from Codex.",
+    "longDescription": "Guides Codex through launching and continuing a BuildGuild quest module.",
+    "developerName": "BuildGuild",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Start module 1",
+      "Start the BuildGuild game"
+    ]
+  }
+}

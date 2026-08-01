@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "buildguild-broken-help-center"
+version = "0.1.0"
+description = "BuildGuild Quest 1: Broken Help Center POC"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "datasets>=3.0",
+  "typer>=0.12",
+  "rich>=13.7",
+  "invoke>=2.2",
+  "streamlit>=1.35",
+]
+
+[project.optional-dependencies]
+dev = []
+
+[project.scripts]
+buildguild = "buildguild.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["buildguild*", "app*", "evals*"]

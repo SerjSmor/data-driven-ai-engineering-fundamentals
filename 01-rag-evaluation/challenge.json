@@ -1,0 +1,116 @@
+{
+  "id": "rag-evaluation",
+  "title": "RAG Evaluation - The Broken Help Center",
+  "goal": "Measure the baseline performance of a help center RAG system and produce a comprehensive evaluation report.",
+  "introduction": {
+    "title": "Measure What's Broken",
+    "body": [
+      "The support bot has lost its memory. The docs are noisy. Retrieval is cursed.",
+      "Nobody knows whether it finds the right articles, where it fails, or whether the team should trust it.",
+      "Your quest is to turn the cursed vibes into a measurable baseline.",
+      "No fancy agents. No dashboards. No optimization yet. First, prove what the current retriever can and cannot do."
+    ],
+    "illustration": "assets/broken_help_center.png"
+  },
+  "dataset": {
+    "name": "Broken Help Center",
+    "description": "Internal help center documents and support queries",
+    "location": "data/",
+    "notes": [
+      "Includes help center articles and support queries",
+      "Data is noisy and unstructured, reflecting real-world challenges",
+      "Analysis outputs should go to analysis/"
+    ]
+  },
+  "judging": {
+    "mode": "dynamic",
+    "default_level": "medium",
+    "levels": {
+      "easy": "Artifact existence and plausibility check.",
+      "medium": "Implementation review with behavioral validation.",
+      "hard": "Strict review with deep analysis of metrics and insights."
+    }
+  },
+  "milestones": [
+    {
+      "id": "setup",
+      "title": "Setup & Orientation",
+      "short_description": "Initialize the quest and understand the help center structure.",
+      "long_description": "Run the BuildGuild game setup, choose your difficulty level, and explore the help center data structure. Understand what documents and queries you're working with.",
+      "tasks": [
+        {
+          "id": "initialize_game",
+          "title": "Run the BuildGuild game setup",
+          "judge_level": "easy",
+          "expected_artifacts": [".buildguild/player.json"]
+        },
+        {
+          "id": "explore_data",
+          "title": "Explore the help center data structure",
+          "judge_level": "medium",
+          "expected_artifacts": ["analysis/data_exploration.json"]
+        }
+      ]
+    },
+    {
+      "id": "baseline",
+      "title": "Build Baseline Retriever",
+      "short_description": "Implement a simple retrieval baseline for the help center.",
+      "long_description": "Build a baseline retriever that ranks help center documents against support queries. This should be a simple approach (e.g., BM25, TF-IDF, or basic embedding similarity) without complex optimizations.",
+      "tasks": [
+        {
+          "id": "implement_retriever",
+          "title": "Implement baseline retrieval system",
+          "judge_level": "medium",
+          "expected_artifacts": ["buildguild/retriever.py"]
+        },
+        {
+          "id": "retrieve_results",
+          "title": "Generate baseline retrieval results",
+          "judge_level": "medium",
+          "expected_artifacts": ["analysis/baseline_results.json"]
+        }
+      ]
+    },
+    {
+      "id": "evaluation",
+      "title": "Evaluate & Analyze",
+      "short_description": "Evaluate retriever performance with quantitative metrics.",
+      "long_description": "Calculate retrieval metrics (recall@k, NDCG, MRR) and analyze where the retriever succeeds and fails. Identify patterns in successful vs failed retrievals.",
+      "tasks": [
+        {
+          "id": "calculate_metrics",
+          "title": "Calculate retrieval metrics",
+          "judge_level": "hard",
+          "expected_artifacts": ["analysis/metrics.json"]
+        },
+        {
+          "id": "analyze_failures",
+          "title": "Analyze failure cases and success patterns",
+          "judge_level": "hard",
+          "expected_artifacts": ["analysis/failure_analysis.md"]
+        }
+      ]
+    },
+    {
+      "id": "reporting",
+      "title": "Produce Final Report",
+      "short_description": "Create a comprehensive baseline report with findings and recommendations.",
+      "long_description": "Compile all findings into a clear report with metrics, success/failure examples, and recommendations for the next steps in optimizing the help center retriever.",
+      "tasks": [
+        {
+          "id": "create_report",
+          "title": "Write comprehensive baseline report",
+          "judge_level": "hard",
+          "expected_artifacts": ["analysis/baseline_report.md"]
+        },
+        {
+          "id": "present_findings",
+          "title": "Summarize key findings and recommendations",
+          "judge_level": "hard",
+          "expected_artifacts": ["analysis/recommendations.json"]
+        }
+      ]
+    }
+  ]
+}

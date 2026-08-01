@@ -29,7 +29,7 @@ Optional tasks do not block challenge completion and are skipped by milestone an
 Run with the quest requirements through `uv`:
 
 ```bash
-uv run --with-requirements requirements.txt streamlit run app.py
+uv run --no-project --with-requirements requirements.txt streamlit run app.py
 ```
 
 The Streamlit workspace shows milestone summaries, progressive hints, expected artifacts, progress, and milestone-specific restart controls.

@@ -1,0 +1,34 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Virtual environments and local environment files
+.venv/
+venv/
+env/
+.env
+.env.*
+
+# Packaging and build outputs
+*.egg-info/
+build/
+dist/
+
+# BuildGuild runtime state, generated data, and analysis artifacts
+.buildguild/
+data/processed/
+data/raw/
+analysis/*
+!analysis/.gitkeep
+
+# Local tool and OS files
+.DS_Store
+Thumbs.db
+*.log
