@@ -1,0 +1,22 @@
+{
+  "dataset": "Wix/WixQA",
+  "configs": {
+    "wixqa_expertwritten": {
+      "row_count": 0,
+      "columns": [],
+      "missing_values": {},
+      "question_length_words": {"mean": 0, "median": 0, "max": 0},
+      "supporting_article_count": {"mean": 0, "max": 0},
+      "examples": []
+    },
+    "wix_kb_corpus": {
+      "row_count": 0,
+      "columns": [],
+      "missing_values": {},
+      "article_type_counts": {},
+      "content_length_words": {"mean": 0, "median": 0, "max": 0},
+      "examples": []
+    }
+  },
+  "relationship": "Explain how article_ids map to corpus id values."
+}

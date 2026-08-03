@@ -1,0 +1,12 @@
+{
+  "sample_size": 0,
+  "seed": 42,
+  "metric_definitions": {
+    "hit_rate_at_k": "Fraction of questions with at least one gold article in the top-k results.",
+    "mrr": "Mean reciprocal rank of the first retrieved gold article."
+  },
+  "aggregate": {"hit_rate_at_1": 0, "hit_rate_at_3": 0, "hit_rate_at_5": 0, "mrr": 0},
+  "results": [
+    {"question": "", "gold_article_ids": [], "retrieved_article_ids": [], "reciprocal_rank": 0}
+  ]
+}

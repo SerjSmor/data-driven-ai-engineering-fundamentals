@@ -1,23 +1,100 @@
 {
   "challenge_id": "llm-judge-calibration",
   "tasks": {
-    "profile_dialogsum": {"status": "pending", "builder_notes": "", "judge": null},
-    "select_working_sample": {"status": "pending", "builder_notes": "", "judge": null},
-    "create_summarizer": {"status": "pending", "builder_notes": "", "judge": null},
-    "run_baseline": {"status": "pending", "builder_notes": "", "judge": null},
-    "implement_reference_metrics": {"status": "pending", "builder_notes": "", "judge": null},
-    "score_baseline_metrics": {"status": "pending", "builder_notes": "", "judge": null},
-    "inspect_metric_failures": {"status": "pending", "builder_notes": "", "judge": null},
-    "read_g_eval": {"status": "pending", "builder_notes": "", "judge": null},
-    "design_judge_rubric": {"status": "pending", "builder_notes": "", "judge": null},
-    "implement_llm_judge": {"status": "pending", "builder_notes": "", "judge": null},
-    "run_uncalibrated_judge": {"status": "pending", "builder_notes": "", "judge": null},
-    "create_calibration_set": {"status": "pending", "builder_notes": "", "judge": null},
-    "calibrate_llm_judge": {"status": "pending", "builder_notes": "", "judge": null},
-    "evaluate_with_calibrated_judge": {"status": "pending", "builder_notes": "", "judge": null},
-    "improve_summarizer": {"status": "pending", "builder_notes": "", "judge": null},
-    "write_product_recommendation": {"status": "pending", "builder_notes": "", "judge": null},
-    "add_groundedness_metric": {"status": "pending", "builder_notes": "", "judge": null},
-    "add_completeness_metric": {"status": "pending", "builder_notes": "", "judge": null}
+    "profile_dialogsum": {
+      "status": "ready_for_judgment",
+      "builder_notes": "Implemented reproducible DialogSum EDA using the neighboring atis-few-shot-dspy venv. Saved first four train rows, columns, full topic distribution, overall word-length statistics, and exact 'order food' topic statistics with a 50-word bucket histogram. Validated 79 selected rows and histogram totals.",
+      "judge": null,
+      "ready_at": "2026-07-21T18:36:51.438931+00:00"
+    },
+    "select_working_sample": {
+      "status": "pending",
+      "builder_notes": "",
+      "judge": null
+    },
+    "create_summarizer": {
+      "status": "ready_for_judgment",
+      "builder_notes": "Replaced the direct OpenAI SDK implementation with a DSPy 3.2.1 Signature, Module, and Predict program while preserving summarize(conversation) as a string-returning interface. It loads the neighboring .env, uses openai/gpt-4.1-mini, and main runs the first saved training dialogue. Compilation, injected-module testing, dataset loading, and a live DSPy/OpenAI call passed.",
+      "judge": null,
+      "ready_at": "2026-07-21T18:48:32.419250+00:00"
+    },
+    "run_baseline": {
+      "status": "ready_for_judgment",
+      "builder_notes": "Ran the DSPy ConversationSummarizer on the first 10 DialogSum training rows in original order. Saved stable IDs, dialogues, topics, reference summaries, predictions, model configuration, selection policy, and explicit error fields. Validated 10 unique retained rows, 10 successful predictions, and 0 failures.",
+      "judge": null,
+      "ready_at": "2026-07-21T18:53:40.695213+00:00"
+    },
+    "implement_reference_metrics": {
+      "status": "pending",
+      "builder_notes": "Lexical portion implemented: reusable dependency-free ROUGE-L precision, recall, and F1 with documented 0-1 range, score direction, tokenization, and limitation. Unit cases passed. Semantic metric remains to complete this task.",
+      "judge": null
+    },
+    "score_baseline_metrics": {
+      "status": "pending",
+      "builder_notes": "Lexical scoring completed for all 10 retained baseline examples with per-example scores, aggregate mean/min/max, and preserved highest/lowest cases. Semantic scoring remains to complete this task.",
+      "judge": null
+    },
+    "inspect_metric_failures": {
+      "status": "pending",
+      "builder_notes": "",
+      "judge": null
+    },
+    "read_g_eval": {
+      "status": "pending",
+      "builder_notes": "",
+      "judge": null
+    },
+    "design_judge_rubric": {
+      "status": "ready_for_judgment",
+      "builder_notes": "Created an operational five-criterion true/false rubric covering salience, the exact 20% word-count rule, named entities, observer perspective, and formal language. Defined evidence requirements and all-criteria overall aggregation.",
+      "judge": null,
+      "ready_at": "2026-07-21T19:13:04.724504+00:00"
+    },
+    "implement_llm_judge": {
+      "status": "ready_for_judgment",
+      "builder_notes": "Implemented a DSPy judge with a typed nested Pydantic structured output containing five boolean criterion decisions, concise evidence, and overall_pass. Brevity counts and its boolean are enforced deterministically. Compilation, schema tests, brevity tests, and one live structured-output call passed.",
+      "judge": null,
+      "ready_at": "2026-07-21T19:13:04.745618+00:00"
+    },
+    "run_uncalibrated_judge": {
+      "status": "pending",
+      "builder_notes": "Ran the uncalibrated judge on the same 10 retained baseline summaries: 10 structured judgments succeeded and 0 failed. Saved every input, five criterion booleans with evidence, overall result, configuration, and independently validated boolean averages. A deliberately constructed good/bad/ambiguous set remains to fully satisfy this task.",
+      "judge": null
+    },
+    "create_calibration_set": {
+      "status": "pending",
+      "builder_notes": "",
+      "judge": null
+    },
+    "calibrate_llm_judge": {
+      "status": "pending",
+      "builder_notes": "",
+      "judge": null
+    },
+    "evaluate_with_calibrated_judge": {
+      "status": "pending",
+      "builder_notes": "",
+      "judge": null
+    },
+    "improve_summarizer": {
+      "status": "pending",
+      "builder_notes": "",
+      "judge": null
+    },
+    "write_product_recommendation": {
+      "status": "pending",
+      "builder_notes": "",
+      "judge": null
+    },
+    "add_groundedness_metric": {
+      "status": "pending",
+      "builder_notes": "",
+      "judge": null
+    },
+    "add_completeness_metric": {
+      "status": "pending",
+      "builder_notes": "",
+      "judge": null
+    }
   }
 }

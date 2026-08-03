@@ -1,0 +1,5 @@
+streamlit>=1.36
+datasets>=2.19
+pandas>=2.0
+scikit-learn>=1.4
+openai>=1.0

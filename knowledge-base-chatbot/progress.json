@@ -1,0 +1,19 @@
+{
+  "challenge_id": "knowledge-base-chatbot",
+  "tasks": {
+    "profile_dataset": {"status": "pending", "builder_notes": "", "judge": null},
+    "build_dataset_explorer": {"status": "pending", "builder_notes": "", "judge": null},
+    "explain_knowledge_base": {"status": "pending", "builder_notes": "", "judge": null},
+    "draw_rag_flow": {"status": "pending", "builder_notes": "", "judge": null},
+    "trace_example": {"status": "pending", "builder_notes": "", "judge": null},
+    "implement_retriever": {"status": "pending", "builder_notes": "", "judge": null},
+    "build_search_ui": {"status": "pending", "builder_notes": "", "judge": null},
+    "test_retriever": {"status": "pending", "builder_notes": "", "judge": null},
+    "design_grounded_prompt": {"status": "pending", "builder_notes": "", "judge": null},
+    "implement_rag_pipeline": {"status": "pending", "builder_notes": "", "judge": null},
+    "build_chatbot_ui": {"status": "pending", "builder_notes": "", "judge": null},
+    "evaluate_retrieval": {"status": "pending", "builder_notes": "", "judge": null},
+    "evaluate_answers": {"status": "pending", "builder_notes": "", "judge": null},
+    "add_llm_judge": {"status": "pending", "builder_notes": "", "judge": null}
+  }
+}

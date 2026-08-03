@@ -1,0 +1,189 @@
+{
+  "id": "knowledge-base-chatbot",
+  "title": "Knowledge Base Chatbot with WixQA",
+  "goal": "Build and evaluate a small retrieval-augmented chatbot that answers Wix support questions from a knowledge base.",
+  "introduction": {
+    "title": "Build a Chatbot That Looks Things Up Before It Answers",
+    "body": [
+      "A useful support chatbot should not rely on model memory alone. It should find relevant knowledge-base articles, give those articles to a language model, and answer from that evidence.",
+      "In this quest, you will explore WixQA, draw the retrieval-augmented generation flow, implement a lexical retriever, connect it to an LLM, and measure retrieval and answer quality.",
+      "The result is a small but complete RAG system whose failures can be inspected instead of guessed at."
+    ]
+  },
+  "dataset": {
+    "name": "WixQA",
+    "huggingface_id": "Wix/WixQA",
+    "url": "https://huggingface.co/datasets/Wix/WixQA",
+    "loading_example": "from datasets import load_dataset\n\nqa = load_dataset(\"Wix/WixQA\", \"wixqa_expertwritten\", split=\"train\")\nkb = load_dataset(\"Wix/WixQA\", \"wix_kb_corpus\", split=\"train\")",
+    "notes": [
+      "The expert-written QA configuration contains question, answer, and article_ids fields.",
+      "The knowledge-base corpus contains id, url, contents, and article_type fields.",
+      "article_ids are relevance labels: they identify which corpus articles support each answer.",
+      "Use a small, fixed evaluation sample so experiments are quick and reproducible."
+    ]
+  },
+  "judging": {
+    "mode": "dynamic",
+    "default_level": "medium",
+    "levels": {
+      "easy": "Plausibility and artifact check.",
+      "medium": "Implementation review plus available commands.",
+      "hard": "Strict behavioral review with deeper checks for correctness and superficial implementations."
+    }
+  },
+  "milestones": [
+    {
+      "id": "explore_wixqa",
+      "title": "Explore WixQA and the Knowledge Base",
+      "short_description": "Inspect the question-answer data and the documents the chatbot will search.",
+      "long_description": "Open the WixQA dataset page, load the expert-written QA set and knowledge-base corpus, and explore both as DataFrames. Identify their fields, sizes, article types, and content-length distributions. Build a small Streamlit explorer that makes the two connected datasets tangible.",
+      "tasks": [
+        {
+          "id": "profile_dataset",
+          "title": "Profile the QA data and knowledge-base corpus",
+          "small_hint": "Inspect both configurations and explain how article_ids connect questions to documents.",
+          "full_explanation": "Load Wix/WixQA using the wixqa_expertwritten and wix_kb_corpus configurations. Record row counts, columns, representative examples, missing-value counts, article-type distribution, and useful question/document length statistics. Explain the relationship between QA article_ids and corpus id values.",
+          "judge_level": "medium",
+          "expected_artifacts": ["user_artifacts/src/explore_data.py", "user_artifacts/dataset_profile.json"]
+        },
+        {
+          "id": "build_dataset_explorer",
+          "title": "Build a Streamlit dataset explorer",
+          "small_hint": "Let the learner switch between QA examples and corpus documents.",
+          "full_explanation": "Create a Streamlit app that loads both dataset configurations, shows sample rows, and visualizes at least one useful distribution such as article type, document length, question length, or supporting-document count. Include controls that keep the display responsive rather than rendering the full corpus at once.",
+          "judge_level": "hard",
+          "expected_artifacts": ["user_artifacts/eda_app.py"]
+        },
+        {
+          "id": "explain_knowledge_base",
+          "title": "Explain what the knowledge base contributes",
+          "small_hint": "Contrast stored documents, labeled questions, and model knowledge.",
+          "full_explanation": "Write a short explanation of the role of the Wix knowledge-base corpus, why article IDs are useful ground truth, and why a support chatbot should retrieve current documents rather than answer only from model memory.",
+          "judge_level": "easy",
+          "expected_artifacts": ["user_artifacts/knowledge_base_notes.md"]
+        }
+      ]
+    },
+    {
+      "id": "chatbot_mental_model",
+      "title": "Build the Chatbot Mental Model",
+      "short_description": "Make the retrieve-then-answer flow explicit before implementing it.",
+      "long_description": "Model the system as two distinct stages: retrieval chooses evidence, then generation creates an answer constrained by that evidence. Show the data passed between the user, retriever, knowledge base, LLM, and final response.",
+      "tasks": [
+        {
+          "id": "draw_rag_flow",
+          "title": "Draw the end-to-end chatbot flow",
+          "small_hint": "Include the user, retriever, knowledge base, selected documents, LLM, and answer.",
+          "full_explanation": "Create a Mermaid diagram showing a user question flowing into search, retrieval over the corpus, selected documents entering an LLM prompt, and a grounded answer returning to the user. Include a no-useful-document path so the system can abstain instead of inventing an answer.",
+          "judge_level": "medium",
+          "expected_artifacts": ["user_artifacts/rag_flow.md"]
+        },
+        {
+          "id": "trace_example",
+          "title": "Trace one WixQA example through the flow",
+          "small_hint": "Use a real question and its labeled article IDs.",
+          "full_explanation": "Use one expert-written WixQA row to illustrate the mental model in concrete terms. Show the question, gold article IDs, corresponding document snippets, context assembled for the model, and the expected answer behavior. Clearly distinguish retrieval success from answer quality.",
+          "judge_level": "easy",
+          "expected_artifacts": ["user_artifacts/example_trace.md"]
+        }
+      ]
+    },
+    {
+      "id": "lexical_retrieval",
+      "title": "Build Lexical Search",
+      "short_description": "Retrieve relevant Wix articles with a transparent text-search baseline.",
+      "long_description": "Implement a simple lexical retriever over the knowledge-base corpus. The baseline may use TF-IDF or BM25, but it must return ranked documents with stable IDs and scores. Then expose it in a small user interface and test it against WixQA relevance labels.",
+      "tasks": [
+        {
+          "id": "implement_retriever",
+          "title": "Implement ranked lexical retrieval",
+          "small_hint": "Index document contents and return the top-k id, URL, snippet, and score.",
+          "full_explanation": "Create a reusable lexical retrieval backend using TF-IDF, BM25, or an equivalently transparent method. It should build an index once, accept a query and top_k, and return ranked results containing corpus id, score, URL, article type, and a readable content snippet. Avoid re-fitting the index on every query.",
+          "judge_level": "hard",
+          "expected_artifacts": ["user_artifacts/src/retriever.py"]
+        },
+        {
+          "id": "build_search_ui",
+          "title": "Build an interactive search interface",
+          "small_hint": "Show scores and enough document text to understand why each result matched.",
+          "full_explanation": "Create a Streamlit search app that calls the retrieval backend. Let a user enter a question and choose top_k, then show ranked documents with scores, URLs, article types, and snippets. Include at least one example Wix support question for a quick smoke test.",
+          "judge_level": "medium",
+          "expected_artifacts": ["user_artifacts/search_app.py"]
+        },
+        {
+          "id": "test_retriever",
+          "title": "Test retrieval on labeled questions",
+          "small_hint": "Compare returned IDs with each row's article_ids.",
+          "full_explanation": "Run the retriever on a fixed sample of expert-written questions. Save each query, gold article IDs, retrieved ranked IDs and scores, and whether a relevant document appeared in the top results. Include a few inspected failures rather than reporting only successful examples.",
+          "judge_level": "hard",
+          "expected_artifacts": ["user_artifacts/retrieval_smoke_test.json"]
+        }
+      ]
+    },
+    {
+      "id": "grounded_answers",
+      "title": "Generate Answers from Retrieved Documents",
+      "short_description": "Add an LLM that answers from retrieved Wix help articles.",
+      "long_description": "Turn the search baseline into a small RAG chatbot. Assemble retrieved documents into a bounded context, instruct the LLM to use that evidence, expose sources, and handle missing evidence explicitly.",
+      "tasks": [
+        {
+          "id": "design_grounded_prompt",
+          "title": "Design a grounded answer prompt",
+          "small_hint": "Tell the model how to use sources and what to do when context is insufficient.",
+          "full_explanation": "Write a prompt template with separate question and retrieved-context sections. Require an answer supported by the context, source references using stable document IDs or URLs, and an explicit insufficient-context response when the documents do not support an answer.",
+          "judge_level": "medium",
+          "expected_artifacts": ["user_artifacts/prompts/grounded_answer_prompt.txt"]
+        },
+        {
+          "id": "implement_rag_pipeline",
+          "title": "Implement search then answer",
+          "small_hint": "Keep retrieval, context formatting, and provider calls as separate functions.",
+          "full_explanation": "Create a backend that accepts a question, retrieves top-k documents, builds bounded context, calls an OpenAI- or Claude-compatible language model, and returns the answer together with its sources. Keep provider secrets in environment variables and make failure states understandable.",
+          "judge_level": "hard",
+          "expected_artifacts": ["user_artifacts/src/rag.py"]
+        },
+        {
+          "id": "build_chatbot_ui",
+          "title": "Build the knowledge-base chatbot UI",
+          "small_hint": "Make the answer and supporting sources inspectable.",
+          "full_explanation": "Create a Streamlit chatbot that accepts Wix support questions, calls the RAG backend, displays the answer, and shows the retrieved sources with links or expandable snippets. Preserve enough interaction state for a user to compare a question, answer, and evidence.",
+          "judge_level": "medium",
+          "expected_artifacts": ["user_artifacts/chatbot_app.py"]
+        }
+      ]
+    },
+    {
+      "id": "evaluation",
+      "title": "Evaluate Retrieval and Answers",
+      "short_description": "Measure where the system succeeds and separate search errors from generation errors.",
+      "long_description": "Evaluate the two-stage system with two-stage evidence. First calculate retrieval metrics from article_ids. Then inspect end-to-end answers against WixQA references. Optionally add an LLM judge for groundedness and completeness, while keeping its limitations visible.",
+      "tasks": [
+        {
+          "id": "evaluate_retrieval",
+          "title": "Calculate retrieval metrics",
+          "small_hint": "Recall@k answers whether any or all gold article IDs were found; define your variant precisely.",
+          "full_explanation": "Evaluate the lexical retriever on a fixed expert-written sample. Report at least hit rate or recall at more than one k value and mean reciprocal rank. Preserve per-question gold and ranked retrieved IDs, define each metric, and state how multi-document questions are handled.",
+          "judge_level": "hard",
+          "expected_artifacts": ["user_artifacts/src/evaluate_retrieval.py", "user_artifacts/retrieval_evaluation.json"]
+        },
+        {
+          "id": "evaluate_answers",
+          "title": "Evaluate end-to-end answer behavior",
+          "small_hint": "Inspect answer usefulness together with the evidence the pipeline retrieved.",
+          "full_explanation": "Run the complete pipeline on a fixed sample and save question, reference answer, gold article IDs, retrieved sources, generated answer, and errors. Add a concise human error analysis that separates retrieval failures, unsupported claims, incomplete answers, and clear successes.",
+          "judge_level": "hard",
+          "expected_artifacts": ["user_artifacts/answer_evaluation.json", "user_artifacts/evaluation_notes.md"]
+        },
+        {
+          "id": "add_llm_judge",
+          "title": "Bonus: Add groundedness and completeness judgments",
+          "small_hint": "Groundedness asks whether claims are supported; completeness asks whether important supported information is included.",
+          "full_explanation": "Optionally implement a structured LLM judge that scores groundedness against retrieved context and completeness against the reference answer or gold documents. Return criterion-level evidence, retain judge configuration, and describe why the judge is a fallible measurement tool rather than ground truth.",
+          "optional": true,
+          "judge_level": "hard",
+          "expected_artifacts": ["user_artifacts/src/answer_judge.py", "user_artifacts/llm_judge_results.json"]
+        }
+      ]
+    }
+  ]
+}
